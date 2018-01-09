@@ -61,13 +61,14 @@ speciesatlocation = aggregate(plantref$species~plantref$latitude, data = plantre
 As = grep("A", speciesatlocation[,2])
 Us = grep("U", speciesatlocation[,2])
 Both = match(As, Us)
-Asonly = setdiff(As, Both)
-Usonly = setdiff(Us, Both)
+Bothnum = Us[Both]
+Asonly = setdiff(As, Bothnum)
+Usonly = setdiff(Us, Bothnum)
 ###create species vector
 Spvec = c()
 Spvec[Asonly] = 1
 Spvec[Usonly] = 2
-Spvec[Both] = 3
+Spvec[Bothnum] = 3
 
 
 
