@@ -40,7 +40,7 @@ plantref_cols = list(plantref$Citation, plantref$location, plantref$species, doi
 chunks =do.call(paste, plantref_cols)
 plantref$chunks = chunks
 #aggregate references for those locations
-citations = aggregate(plantref$chunks~plantref$latitude, data = plantref, paste, collapse = ';')
+citations = aggregate(plantref$chunks~plantref$latitude, data = plantref, paste, collapse = "<br>")
 
 
 #####make data set to map from sheet with citations as chunks####
@@ -81,6 +81,6 @@ plantmap = leaflet(plantref) %>% addProviderTiles(providers$OpenStreetMap) %>%
 
 plantmap 
 
-saveWidget(plantmap,file ='plantmap1_9.html', selfcontained = TRUE)  #save the html   
+saveWidget(plantmap,file ='plantmap1_22.html', selfcontained = TRUE)  #save the html   
 
 
