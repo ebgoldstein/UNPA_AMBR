@@ -2,22 +2,15 @@
 #EVM 12/1/17
 
 #install package to map (leaflet), download data from GoogleSheets (gsheet), save html (htmlwidgets).drawing objects (sp)
-install.packages(c("shiny", "leaflet", "gsheet", "htmlwidgets", "sp", "plyr", "dplyr", "magrittr", "ggplot2", "tidyr"))
-
-
+install.packages(c("shiny", "leaflet", "gsheet", "htmlwidgets", "sp", "tidyverse"))
 
 ##get leaflet
 library(shiny)
-library(ggplot2)
 library(leaflet)
 library(gsheet)
 library(htmlwidgets)
 library(sp)
-library(magrittr)
-library(plyr)
-library(tidyr)
-library(dplyr)
-
+library(tidyverse)
 
 #import googlesheet (or .csv )with information
 url <- 'https://docs.google.com/spreadsheets/d/1eFPE2Lro-KsNijv2yJVZ2WcGYj9hJ-5RkG92T_u5prQ/edit?usp=sharing'
@@ -33,15 +26,12 @@ dois = paste0("'","<a"," href", "=", plantref$DOI , ">", "DOI</a>","'") #create 
 #make different markers for unpa and ambr
 pal = colorFactor(c("orange", "blue", "purple"), domain = c(2, 1, 3))
 
-
-
 #collapse rows into set of data for pop-up- in text citation, species, obs_type, doi
 plantref_cols = list(plantref$Citation, plantref$location, plantref$species, dois, sep = " ")
 chunks =do.call(paste, plantref_cols)
 plantref$chunks = chunks
 #aggregate references for those locations
 citations = aggregate(plantref$chunks~plantref$latitude, data = plantref, paste, collapse = ';')
-
 
 #####make data set to map from sheet with citations as chunks####
 #find where latitudes line up in plant ref, get longitude
@@ -80,6 +70,4 @@ plantmap = leaflet(plantref) %>% addProviderTiles(providers$OpenStreetMap) %>%
 
 plantmap 
 
-saveWidget(plantmap,file ='plantmap1_9.html', selfcontained = TRUE)  #save the html   
-
-
+saveWidget(plantmap,file ='plantmap.html', selfcontained = TRUE)  #save the html   
