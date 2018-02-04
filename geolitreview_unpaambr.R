@@ -31,7 +31,7 @@ plantref_cols = list(plantref$Citation, plantref$location, plantref$species, doi
 chunks =do.call(paste, plantref_cols)
 plantref$chunks = chunks
 #aggregate references for those locations
-citations = aggregate(plantref$chunks~plantref$latitude, data = plantref, paste, collapse = ';')
+citations = aggregate(plantref$chunks~plantref$latitude, data = plantref, paste, collapse = "<br>")
 
 #####make data set to map from sheet with citations as chunks####
 #find where latitudes line up in plant ref, get longitude
@@ -51,13 +51,14 @@ speciesatlocation = aggregate(plantref$species~plantref$latitude, data = plantre
 As = grep("A", speciesatlocation[,2])
 Us = grep("U", speciesatlocation[,2])
 Both = match(As, Us)
-Asonly = setdiff(As, Both)
-Usonly = setdiff(Us, Both)
+Bothnum = Us[Both]
+Asonly = setdiff(As, Bothnum)
+Usonly = setdiff(Us, Bothnum)
 ###create species vector
 Spvec = c()
 Spvec[Asonly] = 1
 Spvec[Usonly] = 2
-Spvec[Both] = 3
+Spvec[Bothnum] = 3
 
 
 
@@ -70,4 +71,6 @@ plantmap = leaflet(plantref) %>% addProviderTiles(providers$OpenStreetMap) %>%
 
 plantmap 
 
+
 saveWidget(plantmap,file ='plantmap.html', selfcontained = TRUE)  #save the html   
+
